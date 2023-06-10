@@ -115,7 +115,7 @@ function Contador() {
   }
   return (
     <div>
-            <h2>Size</h2>
+            <div id="sizeLabel">Size</div>
             <div className="counter">
             <span id="strokeSize" >{count}</span>
             </div>
