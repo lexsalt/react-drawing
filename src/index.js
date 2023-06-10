@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useState } from "react";
 //import { UseRef } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
@@ -11,49 +11,56 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      width: 50,
+      width: 1000,
       height: 100,
-      color: "red",
+      color: "white",
       painting: true
     };
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick() {
-    const quotes = [
-      ["Believe you can and you're halfway there.", "Theodore Roosevelt"],
-      ["You miss 100% of the shots you don't take.", "Wayne Gretzky"],
-    ];
-    const randomQuoteIndex = Math.floor(Math.random() * quotes.length);
-    const newColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
-    const cuotation = quotes[randomQuoteIndex][0];
-    const theAuthor = quotes[randomQuoteIndex][1];
-    this.setState((state) => ({
-      quote: cuotation,
-      author: theAuthor,
-      color: newColor,
-    }));
-  }
-   updateDimensions = () => {
-     this.setState({ width: window.innerWidth, height: window.innerHeight });
-   }
-  componentDidMount() {
-    window.addEventListener("resize", this.updateDimensions);
-  }
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.updateDimensions);
-  }
+    this.canvasClickWhite = this.canvasClickWhite(this);
+    this.canvasClickBlack = this.canvasClickBlack(this)
+    // this.canvasClickRed = this.canvasClickRed(this)
+    // this.canvasClickGreen = this.canvasClickGreen(this)
+    // this.canvasClickBlue = this.canvasClickBlue(this)
+    // this.canvasClickRandom = this.canvasClickRandom(this)    
+  }  
+   
+canvasClickWhite() {
+  console.log( "miameee")
+}
+canvasClickBlack() {
+  //this.setState({ color: "black" });
+  this.setState(state => ({ color: "black" }))
+  console.log("how deep is your love")
+}
+// canvasClickRed() {
+//   this.setState({ color: "red" });
+// }
+// canvasClickGreen() {
+//   this.setState({ color: "green" });
+// }
+// canvasClickBlue() {
+//   this.setState({ color: "blue" });
+// }
+// canvasClickRandom() {
+//   let col1 = Math.floor(Math.random() * 254) + 1;
+//     let col2 = Math.floor(Math.random() * 254) + 1;
+//     let col3 = Math.floor(Math.random() * 254) + 1;
+//     let strokeColorRandom = "rgba(" + col1 + "," + col2 + "," + col3 + ",1)";
+//     let strokeColor = strokeColorRandom;
+//   this.setState({ color: strokeColor });
+// }
   
   render() {
     const canvasWidth = this.state.width
     const canvasHeight = this.state.height
     const backgroundColor = this.state.color
+    console.log("height: "+this.state.height)
+    console.log("width: "+this.state.width)
+    console.log("color: "+this.state.color)
     return (
       <div className="parent">
-        <div id="sister" className="sister">
-        <canvas style={{ background: backgroundColor, outline: "13px solid pink", width:{canvasWidth},
-        height:{canvasHeight} }}>{
-      }</canvas>
+        <div id="sister" className="sister" style={{ background: backgroundColor, outline: "1px solid pink", width:{canvasWidth}, height:{canvasHeight} }}>
+        {/* <canvas>{}</canvas> */}
         </div>
         <div className="brother">
           <div className="bloque">
@@ -67,31 +74,56 @@ class App extends React.Component {
             <button id="whiteBtn">White</button>
           </div>
           <div className="bloque">
-            <h4>Size</h4>
-            <div className="counter">
-              <h6>Size </h6>
-              <p id="strokeSize" />
-              <p />
-            </div>
-            <button id="masSize">+ Size</button>
-            <button id="menosSize">- Size</button>
+            <Contador></Contador>
           </div>
           <div className="bloque">
             <h4>Background</h4>
-            <button id="whiteCvnBtn">Blanco</button>
-            <button id="blackCvnBtn">Black</button>
-            <button id="redCvnBtn">Red</button>
-            <button id="greenCvnBtn">Green</button>
-            <button id="blueCvnBtn">Blue</button>
-            <button id="randomCvnBtn">Random</button>
+            <button id="whiteCvnBtn" onClick={this.canvasClickWhite}>Blanco</button>
+            <button id="blackCvnBtn" onClick={this.canvasClickBlack}>Black</button>
+            {/* <button id="redCvnBtn" onClick={this.canvasClickRed}>Red</button>
+            <button id="greenCvnBtn" onClick={this.canvasClickGreen}>Green</button>
+            <button id="blueCvnBtn" onClick={this.canvasClickBlue}>Blue</button>
+            <button id="randomCvnBtn" onClick={this.canvasClickRandom}>Random</button> */}
           </div>
         </div>
       </div>
     );
   }
+  updateDimensions = () => {
+    this.setState(state => ({ width: window.innerWidth, height: window.innerHeight }))
+   }
+  componentDidMount() {
+    window.addEventListener("resize", this.updateDimensions);
+  }
   
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateDimensions);
+  }
 }
 
+function Contador() {
+  const [ count, setCount ] = useState(4)
+  function decrementCount() {
+    if (count > 0) {
+      setCount(prevCount => prevCount - 1)
+    } 
+  }
+    function incrementCount() {
+      if (count < 10) {
+        setCount(prevCount => prevCount + 1)
+      }    
+  }
+  return (
+    <div>
+            <h2>Size</h2>
+            <div className="counter">
+            <span id="strokeSize" >{count}</span>
+            </div>
+            <button id="masSize" onClick={incrementCount}>+ Size</button>
+            <button id="menosSize" onClick={decrementCount}>- Size</button>
+          </div>
+  )
+}
 
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
