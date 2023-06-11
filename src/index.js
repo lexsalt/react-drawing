@@ -70,9 +70,6 @@ class App extends React.Component {
     //console.log("pointer es: "+pointerColor)
     return (
       <div className="parent">
-               <div id="sister" className="sister" style={{ background: this.state.backgroundColor, outline: "1px solid pink" }}>
-                    <h1>Hello</h1>
-               </div>
                <div className="brother">
                  <div className="bloque">
                    <h4>Color</h4>
@@ -101,6 +98,10 @@ class App extends React.Component {
        
                  </div>
                </div>
+               <div id="sister" className="sister" style={{ background: this.state.backgroundColor, outline: "1px solid pink" }}>
+                    <h1>Hello</h1>
+               </div>
+
              </div>
     );
   }
