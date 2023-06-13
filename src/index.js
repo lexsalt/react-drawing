@@ -24,6 +24,8 @@ class App extends React.Component {
     this.pointerColorRandom = this.pointerColorRandom.bind(this);
     this.incrementStrokeSize = this.incrementStrokeSize.bind(this);
     this.decrementStrokeSize = this.decrementStrokeSize.bind(this);
+    this.backgroundColorBlack = this.backgroundColorBlack.bind(this);
+    this.backgroundColorWhite = this.backgroundColorWhite.bind(this);
         
   }
   pointerColorBlack() {
@@ -63,17 +65,23 @@ class App extends React.Component {
               this.setState(state => ({ strokeSize: strokeSize - 1 }))
             }
   }
+  backgroundColorBlack() {
+    this.setState(state => ({ backgroundColor: "black" }))
+    console.log("background is now color black")
+  }
+  backgroundColorWhite() {
+    this.setState(state => ({ backgroundColor: "white" }))
+    console.log("background is now color white")
+  }
 
   render() {
-    let pointerColor = this.state.pointerColor
-    let strokeSize = this.state.strokeSize
-    //console.log("pointer es: "+pointerColor)
+    
     return (
       <div className="parent">
                <div className="brother">
                  <div className="bloque">
                    <h4>Color</h4>
-                   <span className="colorcito" style={{background:pointerColor}}/>
+                   <span className="colorcito" style={{background:this.state.pointerColor}}/>
                    <button id="BlackBtn" onClick={this.pointerColorBlack}>Black</button>
                    <button id="RedBtn"  onClick={this.pointerColorRed}>Red</button>
                    <button id="GreenBtn" onClick={this.pointerColorGreen}>Green</button>
@@ -85,7 +93,7 @@ class App extends React.Component {
                  <div>
                    <div id="sizeLabel">Size</div>
                    <div className="counter">
-                   <span id="strokeSize">{strokeSize}</span>
+                   <span id="strokeSize">{this.state.strokeSize}</span>
                    </div>
                    <button id="masSize" onClick={this.incrementStrokeSize}>+ Size</button>
                    <button id="menosSize" onClick={this.decrementStrokeSize}>- Size</button>
@@ -93,8 +101,8 @@ class App extends React.Component {
                  </div>
                  <div className="bloque">
                    <h4>Background</h4>
-                   <button id="whiteCvnBtn">Blanco</button>
-                   <button id="blackCvnBtn">Black</button>
+                   <button id="whiteCvnBtn" onClick={this.backgroundColorWhite}>Blanco</button>
+                   <button id="blackCvnBtn" onClick={this.backgroundColorBlack}>Black</button>
        
                  </div>
                </div>
