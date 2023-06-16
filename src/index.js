@@ -1,8 +1,9 @@
-import React from "react";
+import React, {useState, useEffect, useRef} from "react";
 //import { UseRef } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
+//import { useEffect } from "react";
 
 
 class App extends React.Component {
@@ -26,7 +27,13 @@ class App extends React.Component {
     this.decrementStrokeSize = this.decrementStrokeSize.bind(this);
     this.backgroundColorBlack = this.backgroundColorBlack.bind(this);
     this.backgroundColorWhite = this.backgroundColorWhite.bind(this);
+    this.renderTimes = this.renderTimes(this);
         
+  }
+  renderTimes(){
+    let renderCount = 0
+    renderCount++
+    console.log(`Rendered ${renderCount} times`)
   }
   pointerColorBlack() {
     this.setState(state => ({ pointerColor: "black" }))
@@ -107,7 +114,7 @@ class App extends React.Component {
                  </div>
                </div>
                <div id="sister" className="sister" style={{ background: this.state.backgroundColor, outline: "1px solid pink" }}>
-                    <h1>Hello</h1>
+                    <Mapp />
                </div>
 
              </div>
@@ -115,31 +122,77 @@ class App extends React.Component {
   }
 };
 
-
-// function Contador() {
-//   const [ count, setCount ] = useState(4)
-//   function decrementCount() {
-//     if (count > 0) {
-//       setCount(prevCount => prevCount - 1)
-//     } 
+// function Hello() {
+  
+//   const [windowWidth, setwindowWidth] = useState(window.innerWidth)
+//   const [windowHeight, setwindowHeight] = useState(window.innerHeight)
+//   const handleResize = () => {
+//     setwindowWidth(window.innerWidth)
+//     setwindowHeight(window.innerHeight)
 //   }
-//     function incrementCount() {
-//       if (count < 10) {
-//         setCount(prevCount => prevCount + 1)
-//         console.log("1: ")
-//       }    
-//   }
+//   const sisterDiv = useRef(null)
+//   //
+//   useEffect ((windowWidth, sisterDiv) => {
+//     window.addEventListener("resize", handleResize)
+    
+//     return () => {
+//       window.removeEventListener("resize", handleResize)
+//     }
+//   }, [])
 //   return (
-//     <div>
-//             <div id="sizeLabel">Size</div>
-//             <div className="counter">
-//             <span id="strokeSize" >{count}</span>
-//             </div>
-//             <button id="masSize" onClick={incrementCount}>+ Size</button>
-//             <button id="menosSize" onClick={decrementCount}>- Size</button>
-//           </div>
+//     <div ref={sisterDiv} style={{background: "pink",width: windowWidth, height: windowHeight, border: "4px black solid"}}><h1>{windowWidth}{" x "}{windowHeight}</h1></div>
 //   )
 // }
+
+function Mapp() {
+  
+  const canvasRef = useRef(null)
+  const contextRef = useRef(null)
+  const [isDrawing, setIsDrawing] = useState(false)
+
+  useEffect (() => {
+    const canvas = canvasRef.current
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+    canvas.style.width = `${window.innerWidth}px`
+    canvas.style.height = `${window.innerHeight}px`
+    const c = canvas.getContext('2d')
+    c.lineCap = 'round'
+    c.strokeStyle = "black"
+    c.lineWidth = 5
+    contextRef.current = c
+
+  }, [])
+
+  const startDrawing = ({nativeEvent}) => {
+    const {offsetX, offsetY} = nativeEvent
+    contextRef.current.beginPath()
+    contextRef.current.moveTo(offsetX,offsetY)
+    setIsDrawing(true)
+
+  }
+  const endDrawing = () => {
+    contextRef.current.closePath()
+  setIsDrawing(false)
+  }
+  const draw = (nativeEvent) => {
+    if(!isDrawing) {
+      const {offsetX, offsetY} = nativeEvent
+      contextRef.current.lineTo(offsetX,offsetY)
+      contextRef.current.stroke()
+    }
+  }
+
+  return(
+    <canvas 
+    onMouseDown={startDrawing}
+    onMouseUp={endDrawing}
+    onMouseMove={draw}
+    ref={canvasRef}
+    style={{background:"green"}}
+    />
+  )
+}
 
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
