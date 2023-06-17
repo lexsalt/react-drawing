@@ -152,16 +152,16 @@ function Mapp() {
 
   useEffect (() => {
     const canvas = canvasRef.current
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
+    canvas.width = window.innerWidth * 2
+    canvas.height = window.innerHeight * 2
     canvas.style.width = `${window.innerWidth}px`
     canvas.style.height = `${window.innerHeight}px`
     const c = canvas.getContext('2d')
+    c.scale(2,2)
     c.lineCap = 'round'
     c.strokeStyle = "black"
     c.lineWidth = 5
     contextRef.current = c
-
   }, [])
 
   const startDrawing = ({nativeEvent}) => {
@@ -169,7 +169,6 @@ function Mapp() {
     contextRef.current.beginPath()
     contextRef.current.moveTo(offsetX,offsetY)
     setIsDrawing(true)
-
   }
   const endDrawing = () => {
     contextRef.current.closePath()
@@ -182,15 +181,17 @@ function Mapp() {
       contextRef.current.stroke()
     }
   }
-
   return(
+    <>
+    {/* <h1>{""+isDrawing}</h1> */}
     <canvas 
     onMouseDown={startDrawing}
     onMouseUp={endDrawing}
     onMouseMove={draw}
     ref={canvasRef}
-    style={{background:"green"}}
+    style={{background:"white"}}
     />
+    </>
   )
 }
 
